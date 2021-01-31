@@ -2,7 +2,9 @@
 
 Written using treePL version 1.0
 
+
 usage: treepl.sh config_file PATH_to_treefile
+
 
 The treepl.sh script will perform the following:
 
