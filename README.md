@@ -18,3 +18,6 @@ The treepl.sh script will perform the following:
   (4) identify the smoothing value consistently associated with the lowest chisq value
   
   (5) use all optimized parameters to date a maximum likelihood tree
+
+
+Results will be written to "out_date.tre" file
