@@ -2,22 +2,17 @@
 
 #this block asks the user to input the name of the original configuration file and the PATH to MLTREE and BSREP
 [ -n "$1" ] && CONFIG=$1 || { echo -n "Enter configuration file: "; read CONFIG; }
-[ -n "$2" ] && MLTREE=$2 || { echo -n "Enter PATH to ML tree file: "; read MLTREE; }
-#[ -n "$3" ] && BSREP=$3 || { echo -n "Enter PATH TO BSREP file: "; read BSREP; }
 
-#this block will comment out your bootstrap replicate file for later use
-#sed "s|treefile = ${BSREP}|#&|" ${CONFIG} > config_ml
-cp $CONFIG config_ml #comment out once you have bootstrap trees
+cat $CONFIG > config_orig
 
-#this block will prime your run in treepl
-treePL config_ml > log-file.out 2>&1
+#prime your run in treepl
+treePL config_orig > log-file.out 2>&1
 
-cp config_ml config_prime #make a copy of the configuration file for our edits based on the priming step
+cp config_orig config_prime #make a copy of the configuration file for our edits based on the priming step
 
-#edit config_prime file to contain best optimization parameters
 echo "#best optimization parameters" >> config_prime
 awk '$0 == "PLACE THE LINES BELOW IN THE CONFIGURATION FILE" {i=1;next};i && i++ <= 6' log-file.out >> config_prime #adds the prime results to the configuration file
-sed 's/^prime/#&/' config_prime > config_cv #comment out prime, we don't need it anymore,  and make a new config file for the next step
+sed 's/^prime/#&/' config_prime > config_cv #comment out prime, we don't need it anymore
 
 #add code for cross validation, values are very broad but may need to change if the lowest chisq value in the cv.out file corresponds to the ncvstop value
 printf "#cross validation analysis \nrandomcv \ncviter = 5 \ncvsimaniter = 1000000000 \ncvstart = 10000000 \ncvstop = 0.00000000001 \ncvmultstep = 0.1 \ncvoutfile = cv.out0 " >> config_cv
@@ -67,16 +62,4 @@ sed -r -i 's/^cvstop/#&/' config_smooth
 sed -r -i 's/^cvmultstep/#&/' config_smooth
 sed -r -i 's/^cvoutfile/#&/' config_smooth
 
-#run treepl on your bootstrap replicate trees
-#comment out ml treefile and use the bsrep treefile
-#sed "s|treefile = ${MLTREE}|#&|" config_smooth > config_bs
-#sed -i "s|#treefile = ${BSREP}|treefile = ${BSREP}|" config_bs
-treePL config_bs > log-file-final.out 2>&1
-
-#cleanup working directory after
-mkdir -p logfiles_optimize_cv logfiles_optimize_smooth cv_iter_results
-mv log-file-cv_* logfiles_optimize_cv
-mv log-file-cv-iter_* logfiles_optimize_smooth
-mv cv.out* cv_iter_results
-
-echo "treepl run completed, next steps are to summarize all dated BS replicates into consensus tree using a program such as TreeAnnotator"
+treePL config_smooth > log-file-final.out 2>&1
