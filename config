@@ -1,0 +1,17 @@
+treefile = /home/local/ADS/elau/treepl/sample.tre
+
+#general settings
+numsites = 5000 #number of sites in alignment
+nthreads = 2 #number of threads to use
+thorough #means you want a thorough analysis
+log_pen #rate penalty will use log instead of additive function
+seed = 12345 #set seed value for reproducible results, if not set it will use the clock
+
+#calibrations
+mcra = NAMEOFNODE Species1 Species2 Species3
+min = NAMEOFNODE date_min
+max = NAMEOFNODE date_max
+
+#priming command only for first step
+prime
+
