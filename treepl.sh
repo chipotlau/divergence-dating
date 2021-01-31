@@ -3,12 +3,12 @@
 #this block asks the user to input the name of the original configuration file and the PATH to MLTREE and BSREP
 [ -n "$1" ] && CONFIG=$1 || { echo -n "Enter configuration file: "; read CONFIG; }
 
-cat $CONFIG > config_orig
+cat ${CONFIG} > config_original
 
 #prime your run in treepl
-treePL config_orig > log-file.out 2>&1
+treePL config_original > log-file.out 2>&1
 
-cp config_orig config_prime #make a copy of the configuration file for our edits based on the priming step
+cp config_original config_prime #make a copy of the configuration file for our edits based on the priming step
 
 echo "#best optimization parameters" >> config_prime
 awk '$0 == "PLACE THE LINES BELOW IN THE CONFIGURATION FILE" {i=1;next};i && i++ <= 6' log-file.out >> config_prime #adds the prime results to the configuration file
