@@ -31,7 +31,6 @@ END=10 #number of times it will loop, you can increase this integer if optad and
 for x in $(seq 0 $END);
 do
 	y=$(expr "$x" + 1);
-	cat log-file-cv_$i.out;
 		if cat log-file-cv_$x.out | grep -q "might want to try a different optad=VALUE"; #if it prints this message, add 1 to optad and test again
 			then
 				sed -r -i 's/optad = ([0-9]+)/echo "optad = $((\1+1))"/ge' config_cv;
