@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#this block asks the user to input the name of the original configuration file and the PATH to MLTREE and BSREP
+#this block asks the user to input the name of the original configuration file
 [ -n "$1" ] && CONFIG=$1 || { echo -n "Enter configuration file: "; read CONFIG; }
 
 cat ${CONFIG} > config_original
