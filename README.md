@@ -3,7 +3,7 @@
 Written using treePL version 1.0
 
 
-usage: treepl.sh config_file PATH_to_treefile
+usage: treepl.sh config_file 
 
 
 The treepl.sh script will perform the following:
